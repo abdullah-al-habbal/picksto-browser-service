@@ -1,0 +1,9 @@
+node_modules
+.env
+downloads/*.bin
+downloads/*.zip
+downloads/*.rar
+downloads/*.pdf
+downloads/*.jpg
+downloads/*.png
+downloads/*.gif
