@@ -7,6 +7,16 @@ const detectFileType = require("./fileTypeDetector.util");
 
 const DOWNLOADS_DIR = config.downloadDir;
 
+const USER_AGENTS = [
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+];
+
+const getRandomUserAgent = () =>
+  USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)];
+
 const downloadFile = async (fileUrl, siteSource) => {
   const timestamp = Date.now();
   const cleanName = siteSource.replace(/[^a-zA-Z0-9]/g, "_");
@@ -21,8 +31,7 @@ const downloadFile = async (fileUrl, siteSource) => {
     timeout: 600000,
     maxRedirects: 10,
     headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      "User-Agent": process.env.DOWNLOAD_USER_AGENT || getRandomUserAgent(),
     },
   });
 
