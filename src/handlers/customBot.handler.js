@@ -1,29 +1,8 @@
 // picksto-browser-service\src\handlers\customBot.handler.js
 const { launchBrowser, closeBrowser } = require('../utils/browserLauncher.util');
-const { downloadFile } = require('./downloadProcessing.handler');
+const downloadFile = require('../utils/downloadFile.util');
+const captureDownloadLink = require('../utils/captureDownloadLink.util');
 const path = require('path');
-
-const captureDownloadLink = (page) => {
-  return new Promise(async (resolve) => {
-    let found = null;
-    page.on('response', (resp) => {
-      const ct = resp.headers()['content-type'] || '';
-      const cd = resp.headers()['content-disposition'] || '';
-      const u = resp.url();
-      if (
-        ct.includes('application/') ||
-        ct.includes('octet-stream') ||
-        cd.includes('attachment') ||
-        u.includes('.zip') ||
-        u.includes('.rar')
-      ) {
-        found = u;
-      }
-    });
-    await new Promise((r) => setTimeout(r, 5000));
-    resolve(found);
-  });
-};
 
 const executeStep = async (page, step, credentials) => {
   switch (step.action) {
